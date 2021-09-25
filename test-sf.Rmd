@@ -1,0 +1,53 @@
+---
+title: "Some Examples from `sf` Vignette 3"
+output: 
+  html_document:
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## [Manipulating Simple Feature Geometries](https://r-spatial.github.io/sf/articles/sf3.html) by Edzer Pebesma
+
+### Geometrical operations
+
+```{r message=FALSE, warning=FALSE}
+library(sf)
+
+b0 = st_polygon(list(rbind(c(-1,-1), c(1,-1), c(1,1), c(-1,1), c(-1,-1))))
+b1 = b0 + 2
+b2 = b0 + c(-0.2, 2)
+x = st_sfc(b0, b1, b2)
+a0 = b0 * 0.8
+a1 = a0 * 0.5 + c(2, 0.7)
+a2 = a0 + 1
+a3 = b0 * 0.5 + c(2, -0.5)
+y = st_sfc(a0,a1,a2,a3)
+plot(x, border = 'red')
+plot(y, border = 'green', add = TRUE)
+```
+
+```{r}
+plot(x)
+plot(y, add = TRUE)
+plot(st_intersection(st_union(x),st_union(y)), add = TRUE, col = 'red')
+```
+
+```{r}
+par(mfrow=c(2,2), mar = c(0,0,1,0))
+plot(x, col = '#ff333388'); 
+plot(y, add=TRUE, col='#33ff3388')
+title("x: red, y: green")
+plot(x, border = 'grey')
+plot(st_difference(st_union(x),st_union(y)), col = 'lightblue', add = TRUE)
+title("difference(x,y)")
+plot(x, border = 'grey')
+plot(st_difference(st_union(y),st_union(x)), col = 'lightblue', add = TRUE)
+title("difference(y,x)")
+plot(x, border = 'grey')
+plot(st_sym_difference(st_union(y),st_union(x)), col = 'lightblue', add = TRUE)
+title("sym_difference(x,y)")
+```
+
